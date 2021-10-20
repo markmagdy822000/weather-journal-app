@@ -43,7 +43,7 @@ generateBtn.addEventListener("click", async () => {
 function getFullUrl(apiKey, zipCode){
         if(!zipCode)
         {
-            alert("this is can't be zip code ");
+            alert("This is can't be a Zipcode ");
             return
         }
         return fullUrl = `https://api.openweathermap.org/data/2.5/weather?zip=${zipCode}&appid=${apiKey}&units=metric`
@@ -54,4 +54,6 @@ async function dispTemp(){
     const finalData = await resp.json()
     console.log(finalData);
     document.querySelector("#temp").innerText = finalData.temp;
+    document.querySelector("#temp").innerText = finalData.content;
+    
 }

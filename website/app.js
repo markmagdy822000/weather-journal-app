@@ -15,10 +15,10 @@ generateBtn.addEventListener("click", async () => {
         // To Get the Content
         const content = document.querySelector('#feelings').value
         
-        fetchData(temp, content);
+        await fetchData(temp, content);
         
         //display temp
-        dispTemp();
+        await dispTemp();
         
 }catch(err){
     console.log("Error: ", err);
@@ -41,8 +41,6 @@ async function dispTemp(){
     let t = document.createTextNode(finalData.temp);
     let c = document.createTextNode(finalData.content);
     let d = document.createTextNode(finalData.date);
-    let br = document.createElement('br');
-    let div = document.createElement('div');
     
     document.querySelector("#date").appendChild(d)
     document.querySelector("#temp").appendChild(t)

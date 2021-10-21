@@ -10,35 +10,20 @@ generateBtn.addEventListener("click", async () => {
         // TO Get The Full Link
         const zipCode = document.querySelector('#zip').value
         const fullUrl = getFullUrl(apiKey, zipCode)
-     
-        const res = await fetch(fullUrl)
-        const weatherData = await res.json()
-        const temp = weatherData.main.temp
-        console.log(temp)
-      
-
+        let temp = await getTemp(fullUrl, zipCode, apiKey);
+        
         // To Get the Content
         const content = document.querySelector('#feelings').value
-
-        await(await fetch('/saveData', {
-            method: "POST",
-            headers: {
-                "Content-Type" : "application/json"
-            },
-            body: JSON.stringify({
-                date: newDate,
-                temp,
-                content
-            })
-        })).json();
-
+        
+        fetchData(temp, content);
+        
         //display temp
         dispTemp();
+        
 }catch(err){
     console.log("Error: ", err);
 }
 })
-
 
 function getFullUrl(apiKey, zipCode){
         if(!zipCode)
@@ -53,7 +38,39 @@ async function dispTemp(){
     const resp = await fetch('/getWeatherData')
     const finalData = await resp.json()
     console.log(finalData);
-    document.querySelector("#temp").innerText = finalData.temp;
-    document.querySelector("#temp").innerText = finalData.content;
+    let t = document.createTextNode(finalData.temp);
+    let c = document.createTextNode(finalData.content);
+    let d = document.createTextNode(finalData.date);
+    let br = document.createElement('br');
+    let div = document.createElement('div');
     
+    document.querySelector("#date").appendChild(d)
+    document.querySelector("#temp").appendChild(t)
+    document.querySelector("#content").appendChild(c)
+}
+
+
+async function getTemp(fullUrl, zipCode, apiKey) {
+
+    const res = await fetch(fullUrl)
+    const weatherData = await res.json()
+    const temp = weatherData.main.temp
+    console.log(temp)
+    return temp
+}
+
+async function fetchData(temp, content){
+
+    await(await fetch('/saveData', {
+        method: "POST",
+        headers: {
+            "Content-Type" : "application/json"
+        },
+        body: JSON.stringify({
+            date: newDate,
+            temp,
+            content
+        })
+    })).json();
+
 }
